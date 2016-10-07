@@ -24,12 +24,14 @@ void resetBoard (char (*board)[3]){
 int main(){
   int X_Move = 1;
   int O_Move = 2;
-  int X_Turn = 0;
-  int O_Turn = 1;
-  int BLANK = 0;
+  int X_Turn = 88;
+  int O_Turn = 79;
+  int BLANK = ' ';
+  int wins = 0;
   int turn = X_Turn;
   char input[5];
   char board[3][3];
+  char yesno[10];
   bool stillPlaying = true;
   while (stillPlaying == true) {
     resetBoard(board);
@@ -42,7 +44,7 @@ int main(){
 	cout << "Enter a letter followed by a number" << endl;
       }
       else if (input[0] != 'a' && input[0] != 'b' && input[0] != 'c'){
-	cout << "Row must be an a, v,or c." << endl;
+	cout << "Row must be an a, b,or c." << endl;
       }
       else if (input[1] != '1' && input[1] != '2' && input[1] != '3'){
 	cout << "Column must be a 1, 2, or 3." << endl;
@@ -51,15 +53,60 @@ int main(){
 	int row = input[0]-'a';
 	int column = input[1] - '1';
 	if (board[row][column] == BLANK){
+	  if (turn == X_Move){
+	    cout << board[row][column] << endl;
+	    board [row][column] = X_Turn;
+	    turn = O_Move;
+	  }
+	  else {
+	    board [row][column] = O_Turn;
+	    turn = X_Move;
+	   
+	  }
+	  printBoard(board);
+	}
+	else {
+	  cout << "There's a piece there." << endl;
+	}
+       }
+      if (checkWin(board, X_Move) == true){
+	cout << "X Wins! Play again" << endl;
+	wins++;
+	cin >> yesno;
+	if (0 == strcmp(yesno, "y")){
+	  stillPlaying = true;
+	  resetBoard(board);
+	  }
+	else {
+	  stillPlaying= false;
+        }
+      }
+      else if (checkWin(board, O_Move) == true){
+	cout << "O Wins! Play again" << endl;
+	cin >> yesno;
+	if (0 == strcmp(yesno, "y")){
+	  stillPlaying = true;
+	  resetBoard(board);
+	}
+	else {
+	  stillPlaying= false;
 	}
       }
-      }
+    }
   }
-  return 0;
 }
 
 bool checkTie (char (*board)[3]){
+  int BLANK = ' ';
+  for (int row = 0; row < 3; row++) {
+    for (int column = 0; column < 3; column++) {
+      if (board[row][column] == BLANK){
+	return false;
+      }
+    }
   }
+  return true;
+}
  
 bool checkWin (char (*board)[3], int player){
   if (board[0][0] == player &&
