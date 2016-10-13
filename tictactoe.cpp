@@ -1,3 +1,4 @@
+//Sanil Hattangadi, 10/13/16, we play tic tac toe, alternates turns with xs and os. counts wins
 #include <iostream>
 #include <cstring>
 using namespace std;
